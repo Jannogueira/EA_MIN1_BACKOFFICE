@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:EA_BACKOFFICE_G5": "node dist/EA_BACKOFFICE_G5/server/server.mjs"
+    "serve:ssr:EA_BACKOFFICE_G5": "node dist/EA_BACKOFFICE_G5/server/server.mjs",
+    "postinstall": "npm install -g @angular/cli"
   },
   "private": true,
   "packageManager": "npm@11.8.0",
