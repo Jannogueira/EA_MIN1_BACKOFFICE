@@ -24,7 +24,7 @@ export class UniversidadService {
   }
 
   updateUniversidad(id: string, universidad: Universidad): Observable<Universidad> {
-    return this.http.put<Universidad>(`${this.apiUrl}/${id}`, universidad);
+    return this.http.patch<Universidad>(`${this.apiUrl}/${id}`, universidad);
   }
 
   deleteUniversidad(id: string): Observable<void> {
