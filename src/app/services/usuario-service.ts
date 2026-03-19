@@ -27,7 +27,13 @@ export class UsuarioService {
     return this.http.put<Usuario>(`${this.apiUrl}/${id}`, usuario);
   }
 
-  deleteUsuario(id: string): Observable<void> {
+  // Soft Delete: Marca como inactivo (normalmente se usa PATCH o un endpoint específico)
+  softDeleteUsuario(id: string): Observable<Usuario> {
+    return this.http.patch<Usuario>(`${this.apiUrl}/${id}/soft-delete`, {}); 
+  }
+
+  // Hard Delete: Elimina definitivamente de la BD (normalmente se usa DELETE)
+  hardDeleteUsuario(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
