@@ -1,0 +1,42 @@
+<div class="usuarios-wrapper">
+    <div class="usuarios-container">
+  
+      <h2>Usuarios Univy</h2>
+  
+      <input
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Buscar por nombre..."
+      />
+  
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Universidad</th>
+            <th>Estado</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let user of usuariosVisibles; trackBy: trackById">
+            <td class="id" (click)="toggleId(user._id)">
+                {{ expandedIds[user._id] ? user._id : (user._id | slice:0:5) + '...' }}
+              </td>
+            <td class="name">{{ user.nombre }}</td>
+            <td class="email">{{ user.email }}</td>
+            <td class="rol">{{ user.rol }}</td>
+            <td class="universidad">{{ user.universidad }}</td>
+            <td class="estado">{{ user.activo }}</td>
+            <td><button class="btn">Soft</button>
+                <button class="btn">Hard</button></td>
+          </tr>
+        </tbody>
+      </table>
+  
+    </div>
+  </div>
