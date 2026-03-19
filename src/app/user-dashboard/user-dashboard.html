@@ -18,25 +18,41 @@
             <th>Rol</th>
             <th>Universidad</th>
             <th>Estado</th>
+            <th>Editar</th>
             <th>Eliminar</th>
           </tr>
         </thead>
   
         <tbody>
-          <tr *ngFor="let user of usuariosVisibles; trackBy: trackById">
-            <td class="id" (click)="toggleId(user._id)">
-                {{ expandedIds[user._id] ? user._id : (user._id | slice:0:5) + '...' }}
-              </td>
-            <td class="name">{{ user.nombre }}</td>
-            <td class="email">{{ user.email }}</td>
-            <td class="rol">{{ user.rol }}</td>
-            <td class="universidad">{{ user.universidad }}</td>
-            <td class="estado">{{ user.activo }}</td>
-            <td><button class="btn">Soft</button>
-                <button class="btn">Hard</button></td>
-          </tr>
+            <tr *ngFor="let user of usuariosVisibles; trackBy: trackById">
+                <td class="id" (click)="toggleId(user._id)">
+                  {{ expandedIds[user._id] ? user._id : (user._id | slice:0:3) + '...' }}
+                </td>
+                <td class="name">{{ user.nombre }}</td>
+                <td class="email">{{ user.email }}</td>
+                <td class="rol">{{ user.rol }}</td>
+                <td class="universidad">{{ universidadLabel(user) }}</td>
+                <td class="estado">{{ user.activo }}</td>
+                <td><button class="btn" (click)="editarUsuario(user)">Editar</button></td>
+                <td>
+                  <button class="btn" (click)="softDeleteUsuario(user)">Soft</button>
+                  <button class="btn" (click)="hardDeleteUsuario(user)">Hard</button>
+                </td>
+              </tr>
         </tbody>
       </table>
+
+      <div class="pagination">
+        <button class="btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+          &lt; Anterior
+        </button>
+      
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+      
+        <button class="btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+          Siguiente &gt;
+        </button>
+      </div>
   
     </div>
   </div>

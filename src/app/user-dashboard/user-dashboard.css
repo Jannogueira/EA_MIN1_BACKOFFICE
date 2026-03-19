@@ -22,6 +22,7 @@
     text-align: center;
     margin-bottom: 20px;
   }
+
   
   /* INPUT */
   .usuarios-container input {
@@ -36,6 +37,15 @@
     border-color: #79c7ee;
     outline: none;
     box-shadow: 0 0 0 3px rgba(121, 199, 238, 0.15);
+  }
+
+  .pagination {
+    margin-top: 20px;
+    color: white;
+    text-align: center; 
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
   }
   
   /* TABLE */

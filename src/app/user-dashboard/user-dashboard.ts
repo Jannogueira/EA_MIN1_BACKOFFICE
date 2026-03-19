@@ -30,7 +30,7 @@ export class UserDashboard {
   expandedIds: { [key: string]: boolean } = {};
 
 
-  constructor(private api: UsuarioService, private cdr: ChangeDetectorRef) {
+  constructor(private api: UsuarioService, private cdr: ChangeDetectorRef, private router: Router) {
     this.searchControl = new FormControl('');
   }
 
@@ -93,15 +93,62 @@ trackById(_index: number, u: Usuario): string {
   } 
 
   get usuariosVisibles(): Usuario[] {
-    if (this.mostrarTodosUsuarios) {
-      return this.usuariosFiltrados;
-    }
-    return this.usuariosFiltrados.slice(0, this.limite);
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.usuariosFiltrados.slice(start, start + this.pageSize);
+  }
+  
+  toggleId(id: string) {
+  this.expandedIds[id] = !this.expandedIds[id];
+}
+
+editarUsuario(usuario: Usuario): void {
+  this.router.navigate(['/user-detail', usuario._id]);
+}
+
+softDeleteUsuario(usuario: Usuario): void {
+  if (confirm(`¿Estás seguro de que deseas eliminar al usuario ${usuario.nombre}?`)) {
+    this.api.softDeleteUsuario(usuario._id).subscribe({
+      next: () => {
+        alert('Usuario eliminado exitosamente (soft delete).');
+        this.load();
+      },
+      error: (err) => {
+        console.error(err);
+        alert('No se pudo eliminar el usuario.');
+      }
+    });
+  }
+}
+
+hardDeleteUsuario(usuario: Usuario): void {
+  if (confirm(`¿Estás seguro de que deseas eliminar permanentemente al usuario ${usuario.nombre}? Esta acción no se puede deshacer.`)) {
+    this.api.hardDeleteUsuario(usuario._id).subscribe({
+      next: () => {
+        alert('Usuario eliminado permanentemente.');
+        this.load();
+      },
+      error: (err) => {
+        console.error(err);
+        alert('No se pudo eliminar el usuario.');
+      }
+    });
   }
 
+}
 
-toggleId(id: string) {
-  this.expandedIds[id] = !this.expandedIds[id];
+
+//paginas --> maximo 5 usuarios por página
+currentPage = 1;
+pageSize = 5;
+
+get totalPages(): number {
+  return Math.ceil(this.usuariosFiltrados.length / this.pageSize);
+}
+
+goToPage(page: number): void {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+  }
 }
 
 }
