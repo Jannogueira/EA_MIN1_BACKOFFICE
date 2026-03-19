@@ -6,4 +6,5 @@ export interface Usuario {
     password: string;
     rol: 'admin' | 'user';
     universidad?: Universidad;
+    activo: boolean;
 }
