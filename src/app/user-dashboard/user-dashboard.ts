@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } 
 import { Router, RouterModule } from '@angular/router';
 import { Universidad } from '../models/universidad';
 import { UsuarioService } from '../services/usuario-service';
+import { UniversidadService } from '../services/universidad-service';
 import { Navbar } from '../navbar/navbar';
 
 
@@ -21,6 +22,7 @@ export class UserDashboard implements OnInit {
   searchControl = new FormControl('');
   loading = false;
   errorMsg = '';
+  totalUniversidades = 0;
   
   // Pagination
   currentPage = 1;
@@ -30,7 +32,12 @@ export class UserDashboard implements OnInit {
   showDeleteModal = false;
   userToDelete: Usuario | null = null;
 
-  constructor(private api: UsuarioService, private cdr: ChangeDetectorRef, private router: Router) {}
+  constructor(
+    private api: UsuarioService,
+    private universidadService: UniversidadService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.load();
@@ -65,6 +72,16 @@ export class UserDashboard implements OnInit {
         this.loading = false;
         this.cdr.detectChanges();
       },
+    });
+
+    this.universidadService.getUniversidades().subscribe({
+      next: (res) => {
+        this.totalUniversidades = res.length;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching universities:', err);
+      }
     });
   }
 
