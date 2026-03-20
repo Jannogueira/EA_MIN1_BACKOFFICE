@@ -9,6 +9,6 @@ export const routes: Routes = [
   { path: 'usuarios/crear', component: UserCreate },
   { path: 'usuarios', component: UserDashboard },
   { path: 'usuario/:id', component: UserDetail },
-  { path: '', redirectTo: '/usuarios', pathMatch: 'full' },
-  { path: '**', redirectTo: '/usuarios' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' }
 ];

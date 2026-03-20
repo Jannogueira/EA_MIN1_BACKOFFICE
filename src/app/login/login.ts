@@ -21,8 +21,14 @@ export class Login {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Login attempt:', this.loginForm.value);
-      // alert('Login successful!');
+      const { username, password } = this.loginForm.value;
+
+      if (username === 'admin' && password === 'admin') {
+        console.log('Login exitoso');
+        this.router.navigate(['/usuarios']);
+      } else {
+        alert('Credenciales incorrectas. Por favor use admin/admin');
+      }
     }
   }
 }
