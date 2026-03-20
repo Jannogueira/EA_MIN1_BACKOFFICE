@@ -5,11 +5,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } 
 import { Router, RouterModule } from '@angular/router';
 import { Universidad } from '../models/universidad';
 import { UsuarioService } from '../services/usuario-service';
+import { Navbar } from '../navbar/navbar';
 
 
 @Component({
   selector: 'app-user-dashboard',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, Navbar],
   standalone: true,
   templateUrl: './user-dashboard.html',
   styleUrl: './user-dashboard.css',
