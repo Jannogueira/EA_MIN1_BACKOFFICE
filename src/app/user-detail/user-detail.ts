@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UsuarioService } from '../services/usuario-service';
+import { UniversidadService } from '../services/universidad-service';
+import { Universidad } from '../models/universidad';
 import { Usuario } from '../models/usuario';
 
 @Component({
@@ -17,10 +19,12 @@ export class UserDetail implements OnInit {
   isEditing = false;
   userId: string | null = null;
   usuario?: Usuario;
+  universidades: Universidad[] = [];
 
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
+    private universidadService: UniversidadService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -28,15 +32,26 @@ export class UserDetail implements OnInit {
       nombre: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       rol: ['user', Validators.required],
+      universidad: ['', Validators.required],
       password: [''] // Password control
     });
   }
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id');
+    this.loadUniversidades();
     if (this.userId) {
       this.loadUser();
     }
+  }
+
+  loadUniversidades(): void {
+    this.universidadService.getUniversidades().subscribe({
+      next: (data) => {
+        this.universidades = data;
+      },
+      error: (err) => console.error('Error loading universities:', err)
+    });
   }
 
   loadUser(): void {
@@ -47,6 +62,7 @@ export class UserDetail implements OnInit {
               nombre: user.nombre,
               email: user.email,
               rol: user.rol,
+              universidad: user.universidad?._id || user.universidad,
               password: '' // Always empty initially
             });
             this.userForm.disable();
@@ -68,6 +84,7 @@ export class UserDetail implements OnInit {
         nombre: this.usuario.nombre,
         email: this.usuario.email,
         rol: this.usuario.rol,
+        universidad: this.usuario.universidad?._id || this.usuario.universidad,
         password: ''
       });
     }

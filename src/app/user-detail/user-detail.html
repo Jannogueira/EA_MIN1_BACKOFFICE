@@ -50,6 +50,15 @@
                 </div>
 
                 <div class="space-y-2">
+                    <label class="text-xs font-bold text-secondary uppercase tracking-widest pl-1">Organización / Universidad</label>
+                    <select formControlName="universidad" 
+                            class="w-full bg-surface-container-lowest border border-outline-variant/30 focus:border-secondary focus:ring-4 focus:ring-secondary/10 rounded-xl py-3 px-4 text-sm transition-all outline-none text-white disabled:opacity-60 disabled:cursor-not-allowed appearance-none">
+                        <option value="" disabled selected>Seleccione una organización</option>
+                        <option *ngFor="let uni of universidades" [value]="uni._id">{{ uni.nombre }}</option>
+                    </select>
+                </div>
+
+                <div class="space-y-2">
                     <label class="text-xs font-bold text-secondary uppercase tracking-widest pl-1">Nueva Contraseña</label>
                     <input type="password" formControlName="password" placeholder="Dejar vacío para no cambiar"
                            class="w-full bg-surface-container-lowest border border-outline-variant/30 focus:border-secondary focus:ring-4 focus:ring-secondary/10 rounded-xl py-3 px-4 text-sm transition-all outline-none text-white disabled:opacity-60 disabled:cursor-not-allowed">

@@ -39,7 +39,8 @@ export class UserDashboard implements OnInit {
       this.usuariosFiltrados = this.usuarios.filter(usuario =>
         usuario.nombre.toLowerCase().includes(term) ||
         usuario.email.toLowerCase().includes(term) ||
-        usuario.rol.toLowerCase().includes(term)
+        usuario.rol.toLowerCase().includes(term) ||
+        this.universidadLabel(usuario).toLowerCase().includes(term)
       );
       this.currentPage = 1; // Reset to first page on search
     });
