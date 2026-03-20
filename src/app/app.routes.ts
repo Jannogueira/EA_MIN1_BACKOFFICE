@@ -5,6 +5,7 @@ import { UserDetail } from './user-detail/user-detail';
 import { UserCreate } from './user-create/user-create';
 import { UniversityDashboard } from './university-dashboard/university-dashboard';
 import { UniversityCreate } from './university-create/university-create';
+import { UniversityDetail } from './university-detail/university-detail';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -13,6 +14,7 @@ export const routes: Routes = [
   { path: 'usuario/:id', component: UserDetail },
   { path: 'universidades', component: UniversityDashboard },
   { path: 'universidades/crear', component: UniversityCreate },
+  { path: 'universidad/:id', component: UniversityDetail },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
 ];

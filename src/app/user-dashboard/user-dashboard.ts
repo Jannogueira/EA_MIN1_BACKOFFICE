@@ -23,7 +23,7 @@ export class UserDashboard implements OnInit {
   loading = false;
   errorMsg = '';
   totalUniversidades = 0;
-  
+
   // Pagination
   currentPage = 1;
   pageSize = 5;
@@ -37,11 +37,11 @@ export class UserDashboard implements OnInit {
     private universidadService: UniversidadService,
     private cdr: ChangeDetectorRef,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.load();
-    
+
     this.searchControl.valueChanges.subscribe(value => {
       const term = value?.toLowerCase() ?? '';
       this.usuariosFiltrados = this.usuarios.filter(usuario =>
@@ -109,7 +109,7 @@ export class UserDashboard implements OnInit {
   universidadLabel(u: Usuario): string {
     const org = u.universidad;
     if (!org) return '-';
-    if (typeof org === 'string') return org; 
+    if (typeof org === 'string') return org;
     return (org as Universidad).nombre ?? '-';
   }
 
@@ -146,31 +146,31 @@ export class UserDashboard implements OnInit {
   // --- TOGGLE STATUS LOGIC ---
   onToggleStatus(usuario: Usuario, event: any): void {
     const checkValue = event.target.checked;
-    
+
     if (checkValue) {
-        // Switch is ON -> Recovery
-        this.api.recoveryUsuario(usuario._id).subscribe({
-            next: (res) => {
-                usuario.activo = true;
-                this.cdr.detectChanges();
-            },
-            error: (err) => {
-                console.error('Recovery failed:', err);
-                event.target.checked = false; // rollback
-            }
-        });
+      // Switch is ON -> Recovery
+      this.api.recoveryUsuario(usuario._id).subscribe({
+        next: (res) => {
+          usuario.activo = true;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Recovery failed:', err);
+          event.target.checked = false; // rollback
+        }
+      });
     } else {
-        // Switch is OFF -> Soft Delete
-        this.api.softDeleteUsuario(usuario._id).subscribe({
-            next: (res) => {
-                usuario.activo = false;
-                this.cdr.detectChanges();
-            },
-            error: (err) => {
-                console.error('Soft delete failed:', err);
-                event.target.checked = true; // rollback
-            }
-        });
+      // Switch is OFF -> Soft Delete
+      this.api.softDeleteUsuario(usuario._id).subscribe({
+        next: (res) => {
+          usuario.activo = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Soft delete failed:', err);
+          event.target.checked = true; // rollback
+        }
+      });
     }
   }
 }

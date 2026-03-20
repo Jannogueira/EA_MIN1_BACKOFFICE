@@ -9,7 +9,7 @@ import { Universidad } from '../models/universidad';
 export class UniversidadService {
   private apiUrl = 'http://localhost:1337/universidades';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getUniversidades(): Observable<Universidad[]> {
     return this.http.get<Universidad[]>(this.apiUrl);
