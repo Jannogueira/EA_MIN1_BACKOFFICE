@@ -14,6 +14,33 @@
   color: #f9f8f4;
   text-decoration: none;
   font-family: 'Inter', sans-serif;
+  margin-right: 2rem;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #79c7ee;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #f9f8f4;
+  background-color: rgba(121, 199, 238, 0.15);
+}
+
+.nav-link.active {
+  color: #f9f8f4;
+  background-color: rgba(121, 199, 238, 0.25);
 }
 
 .navbar-menu {
@@ -24,11 +51,11 @@
 .btn-logout {
   background-color: transparent;
   color: #79c7ee; /* Light blue */
-  border: 2px solid #79c7ee;
+  border: 1.5px solid #79c7ee;
   padding: 0.5rem 1.25rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: 'Inter', sans-serif;
@@ -37,4 +64,5 @@
 .btn-logout:hover {
   background-color: #79c7ee;
   color: #003754;
+  box-shadow: 0 4px 12px rgba(121, 199, 238, 0.3);
 }
