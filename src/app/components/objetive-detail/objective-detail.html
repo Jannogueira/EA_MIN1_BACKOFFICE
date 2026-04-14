@@ -1,0 +1,120 @@
+<app-navbar></app-navbar>
+
+<div class="flex flex-col min-h-screen bg-background text-on-surface">
+    <main class="flex-1 p-8 overflow-y-auto">
+        <!-- Header & Progress -->
+        <div class="mb-10 bg-primary-container p-8 rounded-3xl border border-outline-variant/30 shadow-2xl relative overflow-hidden">
+            <!-- Background Glow -->
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-secondary/10 blur-[100px] rounded-full"></div>
+
+            <div class="relative z-10">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+                    <div>
+                        <!-- Editable Name -->
+                        <div class="flex items-center gap-3 mb-2">
+                            <h1 *ngIf="!isEditingNombre" class="text-3xl font-bold text-white tracking-tight">{{ objective?.nombre }}</h1>
+                            <input *ngIf="isEditingNombre" [formControl]="$any(objectiveForm.get('nombre'))" 
+                                class="text-3xl font-bold bg-surface-container-lowest border-b-2 border-secondary outline-none text-white px-2 py-1 rounded-t-lg">
+                            
+                            <button *ngIf="!isEditingNombre" (click)="toggleEdit('nombre')" class="p-2 text-on-surface-variant hover:text-secondary transition-colors">
+                                <span class="material-symbols-outlined text-xl">edit</span>
+                            </button>
+                            <div *ngIf="isEditingNombre" class="flex gap-1">
+                                <button (click)="saveField('nombre')" class="p-1 text-secondary hover:bg-secondary/10 rounded-full"><span class="material-symbols-outlined">check</span></button>
+                                <button (click)="cancelEdit('nombre')" class="p-1 text-error hover:bg-error/10 rounded-full"><span class="material-symbols-outlined">close</span></button>
+                            </div>
+                        </div>
+                        
+                        <!-- Editable Description -->
+                        <div class="flex items-center gap-3">
+                            <p *ngIf="!isEditingDescripcion" class="text-on-surface-variant text-lg">{{ objective?.descripcion }}</p>
+                            <textarea *ngIf="isEditingDescripcion" [formControl]="$any(objectiveForm.get('descripcion'))" 
+                                class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3 text-white outline-none focus:border-secondary w-64 lg:w-96"></textarea>
+                            
+                            <button *ngIf="!isEditingDescripcion" (click)="toggleEdit('descripcion')" class="p-2 text-on-surface-variant hover:text-secondary transition-colors">
+                                <span class="material-symbols-outlined text-sm">edit</span>
+                            </button>
+                            <div *ngIf="isEditingDescripcion" class="flex flex-col gap-1">
+                                <button (click)="saveField('descripcion')" class="p-1 text-secondary hover:bg-secondary/10 rounded-full"><span class="material-symbols-outlined">check</span></button>
+                                <button (click)="cancelEdit('descripcion')" class="p-1 text-error hover:bg-error/10 rounded-full"><span class="material-symbols-outlined">close</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-end">
+                        <span class="text-xs font-bold text-secondary uppercase tracking-[0.2em] mb-1">Owner</span>
+                        <div class="flex items-center gap-3 bg-surface-container-lowest border border-outline-variant/20 px-4 py-2 rounded-2xl shadow-inner">
+                            <div class="w-8 h-8 rounded-full bg-secondary text-primary-container flex items-center justify-center font-bold text-xs uppercase">{{ objective?.usuario?.nombre?.charAt(0) }}</div>
+                            <span class="text-white font-medium">{{ objective?.usuario?.nombre }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar Section -->
+                <div class="mt-8">
+                    <div class="flex justify-between items-end mb-3">
+                        <span class="text-sm font-bold text-white uppercase tracking-widest">Global Progress</span>
+                        <span class="text-4xl font-black text-secondary">{{ progressPercentage }}%</span>
+                    </div>
+                    <div class="w-full bg-surface-container-lowest rounded-full h-4 p-1 shadow-inner border border-outline-variant/10">
+                        <div class="h-full bg-gradient-to-r from-secondary-container via-secondary to-primary-container rounded-full transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                             [style.width.%]="progressPercentage">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Milestone List -->
+            <div class="lg:col-span-2 space-y-4">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-xl font-bold text-white">Milestones List</h2>
+                    <span class="text-xs text-on-surface-variant font-bold uppercase tracking-widest">{{ objective?.fites?.length }} Total</span>
+                </div>
+
+                <div *ngFor="let fita of objective?.fites" 
+                     class="flex items-center gap-4 p-5 bg-primary-container border border-outline-variant/20 rounded-2xl hover:border-secondary/40 transition-all group">
+                    <button (click)="toggleFitaStatus(fita)" 
+                        [class]="fita.estado ? 'text-secondary' : 'text-on-surface-variant'"
+                        class="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center transition-colors hover:bg-secondary/20">
+                        <span class="material-symbols-outlined text-2xl font-bold">{{ fita.estado ? 'check_box' : 'check_box_outline_blank' }}</span>
+                    </button>
+                    
+                    <span [class.line-through]="fita.estado" [class.text-on-surface-variant]="fita.estado" 
+                        class="flex-1 text-white font-medium transition-all">{{ fita.descripcion }}</span>
+                    
+                    <button (click)="deleteMilestone(fita._id)" class="p-2 text-error opacity-0 group-hover:opacity-100 transition-opacity hover:bg-error/10 rounded-xl">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+
+                <div *ngIf="objective?.fites?.length === 0" class="p-12 text-center bg-surface-container/10 rounded-3xl border-2 border-dashed border-outline-variant/30">
+                    <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 block">history_edu</span>
+                    <p class="text-on-surface-variant whitespace-pre-line">No hay hitos creados para este objetivo.
+                    Empieza añadiendo uno en el formulario lateral.</p>
+                </div>
+            </div>
+
+            <!-- Add Milestone Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-primary-container p-6 rounded-3xl border border-outline-variant/20 shadow-xl sticky top-8">
+                    <h3 class="text-lg font-bold text-white mb-6">Add New Milestone</h3>
+                    <form [formGroup]="newFitaForm" (ngSubmit)="addMilestone()">
+                        <div class="mb-4">
+                            <label class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest block mb-2 px-1">Description</label>
+                            <textarea formControlName="descripcion" rows="3"
+                                class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 text-sm text-white outline-none focus:border-secondary transition-all"
+                                placeholder="Describe then next step..."></textarea>
+                        </div>
+                        <button type="submit" [disabled]="newFitaForm.invalid"
+                            class="w-full py-4 bg-secondary text-primary-container font-black text-sm rounded-2xl shadow-lg hover:shadow-secondary/20 hover:opacity-90 transition-all disabled:opacity-30 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">add_circle</span>
+                            Confirm Milestone
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
